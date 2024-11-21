@@ -7,10 +7,12 @@ client.once(Events.ClientReady, readyClient => {
     console.log(`Ready! Logged in as ${readyClient.user.tag}`);
 });
 
+
+
 const prefix = "!";
 
 try {
-    client.on("messageCreate", function (message) {
+    client.on("messageCreate", async function (message) {
         // line checks if the author of the message is a bot, and if so, stops processing the command
         if (message.author.bot) return;
         if (!message.content.startsWith(prefix)) return;
@@ -24,13 +26,25 @@ try {
             message.reply(`Pong! This message executed and completed within ${timeElapsed}ms`);
         } else if (command === "sum") {
             const numericalArgs = args.map(arg => parseFloat(arg));
-            const sum = numericalArgs.reduce((result,arg) => result += arg);
+            const sum = numericalArgs.reduce((result, arg) => result += arg);
             message.reply(`Your sums is ${sum}`);
+        } else if (command === "inspire") {
+            const response = await fetchQuotes();
+
         }
 
     });
 } catch (error) {
     console.log(error, "error");
+
+}
+
+async function fetchQuotes() {
+    const res = await fetch('https://dummyjson.com/quotes/random');
+    return res.json();
+}
+
+function retrieveQuote() {
 
 }
 
