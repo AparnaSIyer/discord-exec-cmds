@@ -1,15 +1,30 @@
 
-const { Client, Events, GatewayIntentBits } = require("discord.js");
-const config = require("./config.json");
+const { Client, Events, GatewayIntentBits, Collection } = require("discord.js");
+require('dotenv').config();
+const {BOT_TOKEN} = process.env;
+const fs = require('fs');
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
 client.once(Events.ClientReady, readyClient => {
-    console.log(`Ready! Logged in as ${readyClient.user.tag}`);
+    // console.log(`Ready! Logged in as ${readyClient.user.tag}`);
 });
 
 
+// It extends JavaScript's native Map class, so it has all the Map features and more!
+client.commands = new Collection();
+const dscdFunctionFolders = fs.readdirSync(`./src/dscd-functions`);
+
+// readdirSync: The fs.readdirSync() method is used to synchronously read the contents of a given directory. The method //returns an array with all the file names or objects in the directory. 
+
+for (const folder of dscdFunctionFolders) {
+    const functionFiles = fs.readdirSync(`./src/dscd-functions/${folder}`).filter(file => file.endsWith('.js'));
+    for (const file of functionFiles) 
+        require(`./dscd-functions/${folder}/${file}`)(client);
+    
+}
 
 const prefix = "!";
+
 
 try {
     client.on("messageCreate", async function (message) {
@@ -44,8 +59,6 @@ async function fetchQuotes() {
     return res.json();
 }
 
-function retrieveQuote() {
-
-}
-
-client.login(config.BOT_TOKEN);
+client.handleEvents();
+client.handleCommands();
+client.login(BOT_TOKEN);

@@ -1,9 +1,9 @@
 {
   "name": "integration-discord-bot-v22.11.0",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "src/bot.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node ."
   },
   "repository": {
     "type": "git",
@@ -17,6 +17,10 @@
   "homepage": "https://github.com/AparnaSIyer/discord-exec-cmds#readme",
   "description": "",
   "dependencies": {
-    "discord.js": "^14.16.3"
+    "@discordjs/rest": "^2.4.0",
+    "chalk": "^5.3.0",
+    "discord-api-types": "^0.37.110",
+    "discord.js": "^14.16.3",
+    "dotenv": "^16.4.5"
   }
 }
